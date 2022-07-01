@@ -1,0 +1,4 @@
+.main,
+.home-container {
+  height: calc(100vh - 7vh);
+}
