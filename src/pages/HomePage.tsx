@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-
 import { ContainerNFT } from '../components/ContainerNFT';
 
 import { contractGenerator } from '../utils/contractGenerator';
@@ -9,13 +7,11 @@ import {
   marketplaceAddress,
   tokenAbi,
   maketplaceAbi,
-  BACKEND_URL,
 } from '../constants';
-import ReactPlayer from 'react-player';
 
 import '../styles.css';
+import { useSelector } from 'react-redux';
 import { userSelector } from '../redux/slices/userSlice';
-import '../styles.css';
 
 const HomePage: React.FC = () => {
   const tokenContract = contractGenerator(tokenAddress, tokenAbi, 'goerli');
@@ -62,7 +58,7 @@ const HomePage: React.FC = () => {
   }, [latestID]);
 
   return (
-    <div className='flex w-screen flex-column bg-gradient-to-r from-sky-500 to-purple-500 home-container'>
+    <div className='flex w-screen flex-column bg-gradient-to-r from-sky-500 to-purple-500 home-container flex-wrap'>
       {URIs.length > 0 ? (
         URIs.map((uri: string, index: number) => (
           <ContainerNFT
@@ -75,13 +71,6 @@ const HomePage: React.FC = () => {
       ) : (
         <div className='bold m-0'>No data yet</div>
       )}
-      <div className='w-full z-100 '>
-        <ReactPlayer
-          url={`${BACKEND_URL}watch/video_1656878798999.mp4`}
-          playing
-          controls
-        />
-      </div>
     </div>
   );
 };
