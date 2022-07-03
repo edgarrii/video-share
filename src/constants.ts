@@ -6,8 +6,8 @@ export const paths = {
 export const METAMASK_EXTENSION_LINK =
   'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en';
 
-export const marketplaceAddress = '0xf18B2bd4A58DA36f92334Cb5f8913CC10f03B357';
-export const tokenAddress = '0xd070b1E2B3AB6E125C66A47aBa470f7fa5D552Df';
+export const marketplaceAddress = '0x19AC002347d3897e117280f775B13303d6BC7ca0';
+export const tokenAddress = '0x168FDf3722152DD10B6460553a1F74dEb5de984d';
 
 export const maketplaceAbi = require('./abi/marketplace.json');
 export const tokenAbi = require('./abi/pausToken.json');

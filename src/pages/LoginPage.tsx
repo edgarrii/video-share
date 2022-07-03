@@ -35,7 +35,6 @@ const LoginPage: React.FC<{ setAddress(address: string): void }> = ({
     if (walletAddress) {
       navigate(paths.Home);
     }
-    console.log(setUser);
   }, [walletAddress]);
 
   const connectWallet = async () => {

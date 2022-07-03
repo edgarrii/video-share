@@ -7,9 +7,11 @@ import {
   tokenAbi,
   maketplaceAbi,
 } from '../constants';
+import { LOCAL_IPFS_NODE_URL } from '../constants';
 
 export const ContainerNFT = (props: any) => {
   const tokenContract = contractGenerator(tokenAddress, tokenAbi, 'goerli');
+  const IPFS_URL = LOCAL_IPFS_NODE_URL;
   const marketplaceContract = contractGenerator(
     marketplaceAddress,
     maketplaceAbi,
@@ -17,24 +19,38 @@ export const ContainerNFT = (props: any) => {
   );
 
   const [metaData, setMetaData] = useState<any>(null);
+  const [price, setPrice] = useState<any>(null);
 
-  const { uri, index } = props;
-
-  const allowance = async () => {
-    return tokenContract.balanceOf(index + 1);
+  const { uri, index, user } = props;
+  const id = index;
+  const amount = 1;
+  const data = '0x';
+  const bought = async () => {
+    return await tokenContract.balanceOf(user, id);
   };
-
+  const getPrice = async (id: number | string) => {
+    return await marketplaceContract.idToNft(id);
+  };
   const getMetaData = async (uri: string) => {
-    const data = await axios.get(`http://localhost:8080/ipfs/${uri}`);
+    const data = await axios.get(`${IPFS_URL}${uri}`);
     setMetaData(data.data);
   };
   useEffect(() => {
     getMetaData(uri);
-  }, []);
+    getPrice(id).then((data) => setPrice(data.price.toNumber()));
+  }, [id]);
 
   const buyOrWatchHandler = async () => {
-    const a = await allowance();
-    console.log(a);
+    const allowance = await bought();
+    console.log(allowance);
+    if (allowance.toNumber() == 0) {
+      const boughtData = await marketplaceContract.buy(id, amount, data, {
+        value: price,
+      });
+      console.log(boughtData);
+      return boughtData;
+    }
+    console.log(123);
   };
 
   const logo = metaData
@@ -54,8 +70,8 @@ export const ContainerNFT = (props: any) => {
           BUY/WATCH
         </button>
         <div className='flex flex-row w-full justify-between'>
-          <span className='m-1'>price:4</span>
-          <span className='m-1'>ID:4</span>
+          <span className='m-1'>price:{price}</span>
+          <span className='m-1'>ID:{id}</span>
         </div>
       </div>
     </div>

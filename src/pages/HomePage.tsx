@@ -10,6 +10,8 @@ import {
 } from '../constants';
 
 import '../styles.css';
+import { useSelector } from 'react-redux';
+import { userSelector } from '../redux/slices/userSlice';
 
 const HomePage: React.FC = () => {
   const tokenContract = contractGenerator(tokenAddress, tokenAbi, 'goerli');
@@ -18,17 +20,19 @@ const HomePage: React.FC = () => {
     maketplaceAbi,
     'goerli'
   );
+  const userObj = useSelector(userSelector);
 
-  const [IDs, setIDs] = useState(0);
+  const [latestID, setLatestID] = useState(0);
   const [baseURI, setBaseURI] = useState('');
   const [URIs, setURIs] = useState<any>([]);
+  const [IDs, setIDs] = useState<any>([]);
 
   const getTotalIDs = async () => {
     return await marketplaceContract.getCurrentId();
   };
 
   const getBaseURI = async () => {
-    return await tokenContract.uri(IDs);
+    return await tokenContract.uri(latestID);
   };
 
   const getURI = async (id: number) => {
@@ -40,22 +44,29 @@ const HomePage: React.FC = () => {
   };
 
   useEffect(() => {
-    getTotalIDs().then((data: any) => setIDs(data.toNumber()));
+    getTotalIDs().then((data: any) => setLatestID(data.toNumber()));
     getBaseURI().then((data: any) => setBaseURI(data));
   }, [marketplaceContract, tokenContract]);
 
   useEffect(() => {
-    for (let i = 1; i <= IDs; i++) {
-      //@ts-ignore
-      getURI(i).then((data: any) => setURIs((oldArray) => [...oldArray, data]));
+    for (let i = 1; i <= latestID; i++) {
+      getURI(i).then((data: any) => {
+        setURIs((oldArray: any) => [...oldArray, data]);
+        setIDs((oldArray: any) => [...oldArray, i]);
+      });
     }
-  }, [IDs]);
+  }, [latestID]);
 
   return (
     <div className='flex w-screen flex-column bg-gradient-to-r from-sky-500 to-purple-500 home-container'>
       {URIs.length > 0 ? (
         URIs.map((uri: string, index: number) => (
-          <ContainerNFT uri={uri} index={index} key={index} />
+          <ContainerNFT
+            uri={uri}
+            index={IDs[index]}
+            key={index}
+            user={userObj.user}
+          />
         ))
       ) : (
         <div className='bold m-0'>No data yet</div>
