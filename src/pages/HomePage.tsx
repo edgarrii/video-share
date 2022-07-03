@@ -7,7 +7,9 @@ import {
   marketplaceAddress,
   tokenAbi,
   maketplaceAbi,
+  BACKEND_URL,
 } from '../constants';
+import ReactPlayer from 'react-player';
 
 import '../styles.css';
 import { useSelector } from 'react-redux';
@@ -71,6 +73,13 @@ const HomePage: React.FC = () => {
       ) : (
         <div className='bold m-0'>No data yet</div>
       )}
+      <div className='w-full z-100 '>
+        <ReactPlayer
+          url={`${BACKEND_URL}watch/video_1656878798999.mp4`}
+          playing
+          controls
+        />
+      </div>
     </div>
   );
 };
