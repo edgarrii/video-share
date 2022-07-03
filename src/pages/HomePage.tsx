@@ -1,38 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { ContainerNFT } from '../components/ContainerNFT';
+import React, { useEffect, useState } from "react";
 
-import { contractGenerator } from '../utils/contractGenerator';
-import {
-  tokenAddress,
-  marketplaceAddress,
-  tokenAbi,
-  maketplaceAbi,
-} from '../constants';
+import { ContainerNFT } from "../components/ContainerNFT";
+import "../styles.css";
 
-import '../styles.css';
+const ethers = require("ethers");
 
 const HomePage: React.FC = () => {
-  const tokenContract = contractGenerator(tokenAddress, tokenAbi, 'goerli');
-  const marketplaceContract = contractGenerator(
+  const provider = ethers.getDefaultProvider("goerli");
+
+  const maketPlaceAbi = require("../abi/marketplace.json");
+  const tokenAbi = require("../abi/pausToken.json");
+
+  const marketplaceAddress = "0x4C7be03F3E15d01856923d1c72F0f6E729B32C56";
+  const tokenAddress = "0x7E6c0A56d6b04C0fE5FeCE539AC953991ADA1838";
+
+  const marketplaceContract = new ethers.Contract(
     marketplaceAddress,
-    maketplaceAbi,
-    'goerli'
+    maketPlaceAbi,
+    provider
   );
+  const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, provider);
 
   const [IDs, setIDs] = useState(0);
-  const [baseURI, setBaseURI] = useState('');
-  const [URIs, setURIs] = useState<any>([]);
 
   const getTotalIDs = async () => {
-    return await marketplaceContract.getCurrentId();
-  };
-
-  const getBaseURI = async () => {
-    return await tokenContract.uri(IDs);
+    const totalIDs = await marketplaceContract.getCurrentId();
   };
 
   const getURI = async (id: number) => {
-    return await tokenContract.idToUri(id);
+    const URI = await tokenContract.uri(id);
   };
 
   const formatedAmount = (amount: any, dec: number, fixed = 0) => {
@@ -40,26 +36,14 @@ const HomePage: React.FC = () => {
   };
 
   useEffect(() => {
-    getTotalIDs().then((data: any) => setIDs(data.toNumber()));
-    getBaseURI().then((data: any) => setBaseURI(data));
-  }, [marketplaceContract, tokenContract]);
+    getTotalIDs().then((data: any) => setIDs(data?.toString()));
+  }, [marketplaceContract]);
 
-  useEffect(() => {
-    for (let i = 1; i <= IDs; i++) {
-      //@ts-ignore
-      getURI(i).then((data: any) => setURIs((oldArray) => [...oldArray, data]));
-    }
-  }, [IDs]);
+  useEffect(() => {}, [IDs]);
 
   return (
-    <div className='flex w-screen flex-column bg-gradient-to-r from-sky-500 to-purple-500 home-container'>
-      {URIs.length > 0 ? (
-        URIs.map((uri: string, index: number) => (
-          <ContainerNFT uri={uri} index={index} key={index} />
-        ))
-      ) : (
-        <div className='bold m-0'>No data yet</div>
-      )}
+    <div className="flex w-screen flex-column bg-gradient-to-r from-sky-500 to-purple-500 home-container">
+      <ContainerNFT />
     </div>
   );
 };

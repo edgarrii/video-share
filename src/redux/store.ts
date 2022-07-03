@@ -1,17 +1,15 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 
-import baseCreateApi from "./apis/baseCreateApi";
 import rootReducer from "./rootReducer";
 
 const reducers = combineReducers({
-  [baseCreateApi.reducerPath]: baseCreateApi.reducer,
   ...rootReducer,
 });
 
 export const store = configureStore({
   reducer: reducers,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(baseCreateApi.middleware),
+    getDefaultMiddleware({ serializableCheck: false }).concat(),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

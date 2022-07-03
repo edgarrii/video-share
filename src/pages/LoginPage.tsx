@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 
 import { Button } from "@material-tailwind/react";
 
+import { setUser } from "../redux/slices/userSlice";
 import "../styles.css";
 import { ethers } from "ethers";
 import { paths } from "../constants";
+import { store } from "../redux/store";
 
 const LoginPage: React.FC<{ setAddress(address: string): void }> = ({
   setAddress,
@@ -20,8 +22,9 @@ const LoginPage: React.FC<{ setAddress(address: string): void }> = ({
           method: "eth_requestAccounts",
         });
 
-        await setWalletAddress(accounts[0]);
-        await setAddress(accounts[0]);
+        setWalletAddress(accounts[0]);
+        store.dispatch(setUser(accounts[0]));
+        setAddress(accounts[0]);
       } catch (error) {
         console.log("Error connecting...", error);
       }
@@ -32,6 +35,7 @@ const LoginPage: React.FC<{ setAddress(address: string): void }> = ({
     if (walletAddress) {
       navigate(paths.Home);
     }
+    console.log(setUser);
   }, [walletAddress]);
 
   const connectWallet = async () => {

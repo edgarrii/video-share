@@ -1,7 +1,7 @@
-import videosReducer from "../redux/slices/videosSlice";
+import userReducer from "../redux/slices/userSlice";
 
 const rootReducer = {
-  videos: videosReducer,
+  user: userReducer,
 };
 
 export default rootReducer;
