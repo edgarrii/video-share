@@ -20,12 +20,12 @@ const HomePage: React.FC = () => {
     maketplaceAbi,
     'goerli'
   );
-  const userObj = useSelector(userSelector);
-
   const [latestID, setLatestID] = useState(0);
   const [baseURI, setBaseURI] = useState('');
   const [URIs, setURIs] = useState<any>([]);
   const [IDs, setIDs] = useState<any>([]);
+
+  const userObj = useSelector(userSelector);
 
   const getTotalIDs = async () => {
     return await marketplaceContract.getCurrentId();
@@ -37,10 +37,6 @@ const HomePage: React.FC = () => {
 
   const getURI = async (id: number) => {
     return await tokenContract.idToUri(id);
-  };
-
-  const formatedAmount = (amount: any, dec: number, fixed = 0) => {
-    return (amount / dec).toFixed(fixed);
   };
 
   useEffect(() => {

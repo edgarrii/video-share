@@ -9,10 +9,10 @@ export const generateBody = (
   const formData = new FormData();
 
   if (object) {
-    formData.append("video", JSON.stringify(object));
-    formData.append("image", file);
+    formData.append('video', JSON.stringify(object));
+    formData.append('image', file);
   } else {
-    formData.append("video", file);
+    formData.append('video', file);
   }
 
   return formData;
