@@ -22,6 +22,7 @@ export const ContainerNFT = (props: any) => {
 
   const [metaData, setMetaData] = useState<any>(null);
   const [price, setPrice] = useState<any>(null);
+  const [name, setName] = useState<any>(null);
 
   const { uri, index, user } = props;
   const id = index;
@@ -36,6 +37,7 @@ export const ContainerNFT = (props: any) => {
   const getMetaData = async (uri: string) => {
     const data = await axios.get(`${IPFS_URL}${uri}`);
     setMetaData(data.data);
+    setName(JSON.parse(metaData.video).name);
   };
   useEffect(() => {
     getMetaData(uri);
@@ -69,6 +71,7 @@ export const ContainerNFT = (props: any) => {
         >
           BUY/WATCH
         </button>
+        <span className='m-1'>{name ? name : 'name'}</span>
         <div className='flex flex-row w-full justify-between'>
           <span className='m-1'>price:{price}</span>
           <span className='m-1'>ID:{id}</span>
