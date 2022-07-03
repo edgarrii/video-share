@@ -1,18 +1,19 @@
-import { IVideo } from "../../interfaces/IVideo";
-import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { RootState } from "../store";
+import { IVideo } from '../../interfaces/IVideo';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { RootState } from '../store';
 
 const initialState: IVideo[] = [];
 
 const videosSlice = createSlice({
-  name: "videosSlice",
+  name: 'videosSlice',
   initialState,
   reducers: {
-    setNfts: (state, { payload }) => payload,
+    //@ts-ignore
+    setVideoMetadata: (state, { payload }) => payload,
   },
 });
 
-export const { setNfts } = videosSlice.actions;
+export const { setVideoMetadata } = videosSlice.actions;
 
 export default videosSlice.reducer;
 

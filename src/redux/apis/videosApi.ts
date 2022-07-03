@@ -1,6 +1,5 @@
-import { IVideo } from "../../interfaces/IVideo";
-import baseCreateApi from "./baseCreateApi";
-import { setNfts } from "../slices/videosSlice";
+import { IVideo } from '../../interfaces/IVideo';
+import baseCreateApi from './baseCreateApi';
 
 export const videosApi = baseCreateApi.injectEndpoints({
   endpoints: (builder) => ({
