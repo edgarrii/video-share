@@ -1,14 +1,13 @@
-import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 
-import { RootState } from '../store';
+import { RootState } from "../store";
 
 const initialState: any[] = [];
 
 const userSlice = createSlice({
-  name: 'userSlice',
+  name: "userSlice",
   initialState,
   reducers: {
-    //@ts-ignore
     setUser: (state, { payload }) => payload,
   },
 });

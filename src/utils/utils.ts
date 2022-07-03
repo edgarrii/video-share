@@ -2,11 +2,18 @@ export const toWei = (value: number) => {
   return value * 10 ** 18;
 };
 
-export const generateBody = (file: any) => {
-  console.log(file);
-
+export const generateBody = (
+  file: any,
+  object?: { name: string; key: string }
+) => {
   const formData = new FormData();
-  formData.append('video', file);
+
+  if (object) {
+    formData.append("video", JSON.stringify(object));
+    formData.append("image", file);
+  } else {
+    formData.append("video", file);
+  }
 
   return formData;
 };
