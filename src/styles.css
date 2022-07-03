@@ -1,6 +1,11 @@
 .main,
 .home-container {
-  height: calc(100vh - 7vh);
+  min-height: 100vh;
+  padding-bottom: 5rem;
+}
+
+.home-container {
+  padding-top: 2rem;
 }
 
 /* hide arrows

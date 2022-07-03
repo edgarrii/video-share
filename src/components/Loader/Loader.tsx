@@ -4,7 +4,7 @@ import "./Loader.css";
 
 export const Loader = () => {
   return (
-    <div className="w-screen h-screen items-center justify-center bg-black absolute z-50 top-0 left-0 opacity-60 loader">
+    <div className="w-screen bg-black absolute z-30 top-0 left-0 opacity-60 loader">
       <svg className="spinner" viewBox="0 0 50 50">
         <circle
           className="path"

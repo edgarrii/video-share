@@ -1,31 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import { ContainerNFT } from '../components/ContainerNFT';
+import React, { useEffect, useState } from "react";
+import { ContainerNFT } from "../components/ContainerNFT";
 
-import { contractGenerator } from '../utils/contractGenerator';
+import { contractGenerator } from "../utils/contractGenerator";
 import {
   tokenAddress,
   marketplaceAddress,
   tokenAbi,
   maketplaceAbi,
-} from '../constants';
+} from "../constants";
 
-import '../styles.css';
-import { useSelector } from 'react-redux';
-import { userSelector } from '../redux/slices/userSlice';
+import "../styles.css";
+import { useSelector } from "react-redux";
+import { userSelector } from "../redux/slices/userSlice";
+import { Loader } from "../components/Loader/Loader";
 
 const HomePage: React.FC = () => {
-  const tokenContract = contractGenerator(tokenAddress, tokenAbi, 'goerli');
+  const tokenContract = contractGenerator(tokenAddress, tokenAbi, "goerli");
   const marketplaceContract = contractGenerator(
     marketplaceAddress,
     maketplaceAbi,
-    'goerli'
+    "goerli"
   );
   const userObj = useSelector(userSelector);
 
   const [latestID, setLatestID] = useState(0);
-  const [baseURI, setBaseURI] = useState('');
+  const [baseURI, setBaseURI] = useState("");
   const [URIs, setURIs] = useState<any>([]);
   const [IDs, setIDs] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getTotalIDs = async () => {
     return await marketplaceContract.getCurrentId();
@@ -44,9 +46,11 @@ const HomePage: React.FC = () => {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    URIs.length !== 0 ? setIsLoading(false) : null;
     getTotalIDs().then((data: any) => setLatestID(data.toNumber()));
     getBaseURI().then((data: any) => setBaseURI(data));
-  }, [marketplaceContract, tokenContract]);
+  }, [marketplaceContract, tokenContract, URIs]);
 
   useEffect(() => {
     for (let i = 1; i <= latestID; i++) {
@@ -58,7 +62,7 @@ const HomePage: React.FC = () => {
   }, [latestID]);
 
   return (
-    <div className='flex w-screen flex-column bg-gradient-to-r from-sky-500 to-purple-500 home-container flex-wrap'>
+    <div className="flex w-screen flex-column bg-gradient-to-r from-sky-500 to-purple-500 home-container flex-wrap items-start pl-5">
       {URIs.length > 0 ? (
         URIs.map((uri: string, index: number) => (
           <ContainerNFT
@@ -69,7 +73,7 @@ const HomePage: React.FC = () => {
           />
         ))
       ) : (
-        <div className='bold m-0'>No data yet</div>
+        <Loader />
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 .spinner {
     animation: spin 2s linear infinite;
-    z-index: 2;
+    z-index: 100;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -9,8 +9,12 @@
     height: 50px;
 }
 
+.loader {
+    height: 101vh
+}
+
 .spinner .path {
-    stroke: rgb(11, 17, 22);
+    stroke: rgb(0, 141, 255);
     stroke-linecap: round;
     animation: spinner-path 1.5s ease-in-out infinite;
 }

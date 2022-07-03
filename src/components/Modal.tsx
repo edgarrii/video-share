@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 
 import { Input } from "@material-tailwind/react";
-import { ethers } from "ethers";
 import axios from "axios";
 
 import { ClosedIcon } from "./ClosedIcon";
 import { FileContainer } from "./FileContainer";
-import { generateBody, toWei } from "../utils/utils";
+import { generateBody } from "../utils/utils";
 import marketplace from "../abi/marketplace.json";
 import { BACKEND_URL, marketplaceAddress } from "../constants";
 import { IVideoMetaData } from "../App";
@@ -25,8 +24,7 @@ export const Modal: React.FC<{
   const [videoName, setVideoName] = useState<string>("");
   const [nftPrice, setNftPrice] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const abi = require("../abi/marketplace.json");
-  const contract = contractGenerator(marketplaceAddress, abi);
+  const contract = contractGenerator(marketplaceAddress, marketplace);
 
   const handleConfirm = async () => {
     try {
@@ -107,7 +105,7 @@ export const Modal: React.FC<{
                   placeholder="Name your video"
                   onChange={(e) => setVideoName(e.target.value)}
                 />
-                <div className="flex items-start mx-4 mr-auto">
+                <div className="flex items-center my-2 mx-4 mr-auto">
                   <Input
                     type="number"
                     pattern="[0-9]\d*\.?\d*$"

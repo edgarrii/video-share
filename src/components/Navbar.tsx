@@ -1,14 +1,17 @@
-import { Button } from "@material-tailwind/react";
 import React from "react";
 import { Link } from "react-router-dom";
 
 import { paths } from "../constants";
+import { useSelector } from "react-redux";
+import { userSelector } from "../redux/slices/userSlice";
 
 const Navbar: React.FC<{
   walletAddress: string;
+  chainId: number | null;
   setShowModal(condition: boolean): void;
-}> = ({ walletAddress, setShowModal }) => {
+}> = ({ walletAddress, setShowModal, chainId }) => {
   const logo = require("../assets/logo.png");
+  const currentUser = useSelector(userSelector);
 
   return (
     <nav className="relative flex flex-wrap items-center justify-between px-2 py-3">
@@ -26,15 +29,26 @@ const Navbar: React.FC<{
             marketplace
           </Link>
         </div>
+        {chainId !== 5 && (
+          <h1 className="text-lg uppercase font-bold text-red-500 ml-44 z-50">
+            You need to switch your network to Goerli
+          </h1>
+        )}
         <div
           className={"lg:flex flex-grow items-center"}
           id="example-navbar-danger"
         >
           <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
-            <li className="nav-item">
+            <li className="nav-item disabled:true">
               <h2
-                onClick={() => setShowModal(true)}
-                className="cursor-pointer px-3 py-2 flex items-center text-lg uppercase font-bold leading-snug text-sky-500 hover:text-indigo-500 hover:scale-110 ease-in duration-150 mr-10"
+                onClick={() => {
+                  currentUser.user.length !== 0 && setShowModal(true);
+                }}
+                className={
+                  currentUser.user.length === 0
+                    ? "cursor-no-drop px-3 py-2 flex items-center text-lg uppercase font-bold leading-snug text-gray-300"
+                    : `cursor-pointer px-3 py-2 flex items-center text-lg uppercase font-bold leading-snug text-sky-500 hover:text-indigo-500 hover:scale-110 ease-in duration-150 mr-10`
+                }
               >
                 Create
               </h2>

@@ -1,3 +1,11 @@
+const ethers = require("ethers");
+
+export const getChainId = async () => {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const { chainId } = await provider.getNetwork();
+  return chainId;
+};
+
 export const toWei = (value: number) => {
   return value * 10 ** 18;
 };
